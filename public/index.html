@@ -8,50 +8,99 @@
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
+            background: #fafafa;
         }
 
         h1 {
             color: #333;
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            background: #f0f0f0;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
+        .contact {
+            background: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .favourite {
-            background-color: #ffefc2;
+            border-left: 5px solid #ffbf00;
+        }
+
+        .field {
+            margin: 3px 0;
+        }
+
+        .field span {
+            font-weight: bold;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
-    <h1>Contacts</h1>
-    <ul id="contacts"></ul>
+    <h1 id="title">Contacts</h1>
+    <div id="contacts"></div>
 
     <script>
         async function loadContacts() {
-            try {
-                const res = await fetch('/contacts');
-                const data = await res.json();
-                const ul = document.getElementById('contacts');
+            const container = document.getElementById('contacts');
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
 
-                data.data.forEach(contact => {
-                    const li = document.createElement('li');
-                    li.textContent = `${contact.name} — ${contact.phoneNumber} — ${contact.email || '-'}`;
-                    if (contact.isFavourite) li.classList.add('favourite');
-                    ul.appendChild(li);
-                });
+            try {
+                if (pathParts[0] === 'contacts' && pathParts[1]) {
+                    // Отдельный контакт по ID
+                    const res = await fetch(`/contacts/${pathParts[1]}`);
+                    const data = await res.json();
+                    container.innerHTML = '';
+                    if (data.data) {
+                        const contact = data.data;
+                        const div = document.createElement('div');
+                        div.classList.add('contact');
+                        if (contact.isFavourite) div.classList.add('favourite');
+                        div.innerHTML = `
+              <div class="field"><span>Name:</span> ${contact.name}</div>
+              <div class="field"><span>Phone:</span> ${contact.phoneNumber}</div>
+              <div class="field"><span>Email:</span> ${contact.email || '-'}</div>
+              <div class="field"><span>Type:</span> ${contact.contactType}</div>
+              <div class="field"><span>Created At:</span> ${new Date(contact.createdAt).toLocaleString()}</div>
+              <div class="field"><span>Updated At:</span> ${new Date(contact.updatedAt).toLocaleString()}</div>
+              <div class="field"><a href="/contacts">← Back to all contacts</a></div>
+            `;
+                        container.appendChild(div);
+                    } else {
+                        container.textContent = 'Контакт не найден';
+                    }
+
+                } else {
+                    // Список всех контактов
+                    const res = await fetch('/contacts');
+                    const data = await res.json();
+                    container.innerHTML = '';
+                    data.data.forEach(contact => {
+                        const div = document.createElement('div');
+                        div.classList.add('contact');
+                        if (contact.isFavourite) div.classList.add('favourite');
+                        div.innerHTML = `
+              <div class="field"><span>Name:</span> <a href="/contacts/${contact._id}">${contact.name}</a></div>
+              <div class="field"><span>Phone:</span> ${contact.phoneNumber}</div>
+              <div class="field"><span>Email:</span> ${contact.email || '-'}</div>
+              <div class="field"><span>Type:</span> ${contact.contactType}</div>
+            `;
+                        container.appendChild(div);
+                    });
+                }
             } catch (err) {
                 console.error(err);
-                document.getElementById('contacts').textContent = 'Ошибка загрузки контактов';
+                container.textContent = 'Ошибка загрузки данных';
             }
         }
 
