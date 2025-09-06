@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Contacts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f0f0f0;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .favourite {
+            background-color: #ffefc2;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Contacts</h1>
+    <ul id="contacts"></ul>
+
+    <script>
+        async function loadContacts() {
+            try {
+                const res = await fetch('/contacts');
+                const data = await res.json();
+                const ul = document.getElementById('contacts');
+
+                data.data.forEach(contact => {
+                    const li = document.createElement('li');
+                    li.textContent = `${contact.name} — ${contact.phoneNumber} — ${contact.email || '-'}`;
+                    if (contact.isFavourite) li.classList.add('favourite');
+                    ul.appendChild(li);
+                });
+            } catch (err) {
+                console.error(err);
+                document.getElementById('contacts').textContent = 'Ошибка загрузки контактов';
+            }
+        }
+
+        loadContacts();
+    </script>
+</body>
+
+</html>
