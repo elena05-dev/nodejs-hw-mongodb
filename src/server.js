@@ -1,9 +1,8 @@
 // src/server.js
-
+import dotenv from 'dotenv';
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { getEnvVar } from './utils/getEnvVar.js';
 import {
   getContactsController,
