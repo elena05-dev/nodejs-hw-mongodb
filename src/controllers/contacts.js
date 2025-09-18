@@ -38,8 +38,8 @@ export const createContactController = async (req, res) => {
   if (!createContact) {
     throw createHttpError(404, 'Contact not found');
   }
-  res.status(200).json({
-    status: 200,
+  res.status(201).json({
+    status: 201,
     message: `Successfully patched a contact!`,
     data: contact,
   });
