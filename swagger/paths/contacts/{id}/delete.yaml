@@ -1,21 +1,21 @@
 tags:
   - Contacts
-summary: Get contact by ID
-operationId: getContact
-description: Retrieve a single contact by its ID
+summary: Delete a contact by ID
+operationId: deleteContact
+description: Remove a contact from the system by its ID
 security:
   - bearerAuth: []
 parameters:
   - in: path
     name: id
     required: true
-    description: ID of the contact to retrieve
+    description: ID of the contact to delete
     schema:
       type: string
       example: '65ca67e7ae7f10c88b598384'
 responses:
   '200':
-    description: Contact retrieved successfully
+    description: Contact successfully deleted
     content:
       application/json:
         schema:
@@ -23,16 +23,13 @@ responses:
           required:
             - status
             - message
-            - data
           properties:
             status:
               type: integer
               example: 200
             message:
               type: string
-              example: Successfully retrieved contact by ID
-            data:
-              $ref: '../../../components/schemas/contact.yaml'
+              example: Contact deleted successfully!
   '401':
     $ref: '../../../components/responses/401.yaml'
   '404':

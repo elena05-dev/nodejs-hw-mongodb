@@ -1,41 +1,48 @@
 type: object
 required:
-  - _id
   - name
-  - age
-  - gender
-  - avgMark
-  - onDuty
+  - phoneNumber
+  - contactType
+  - userId
 properties:
   _id:
-    description: "Contact's id"
     type: string
-    example: 65e4decdd286b30065d54af9
+    description: MongoDB document ID
+    example: '65ca67e7ae7f10c88b598384'
   name:
-    description: "Contact's name"
     type: string
     example: 'John Doe'
-  age:
-    description: "Contact's age"
-    type: number
-    example: 12
-  gender:
-    description: "Contact's age"
+  phoneNumber:
     type: string
-    enum: ['male', 'female', 'other']
-  avgMark:
-    description: "Contact's average mark. Should be between 1 and 12"
-    type: number
-    example: 9.7
-  onDuty:
-    description: 'Whether is contact on duty'
+    example: '+123456789'
+  email:
+    type: string
+    example: 'john@example.com'
+  isFavourite:
     type: boolean
+    default: false
     example: false
-  parentId:
-    description: "Contact's parent id"
+  contactType:
     type: string
-    example: 65e4decdd286b30065d54af9
+    enum:
+      - work
+      - home
+      - personal
+    default: personal
+    example: personal
+  userId:
+    type: string
+    description: ID of the user who owns the contact
+    example: '64b123abc456def7890abcd1'
   photo:
-    description: "Link to contact's photo"
     type: string
-    example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
+    description: URL or path to contact's photo
+    example: 'https://example.com/uploads/contact-photo.jpg'
+  createdAt:
+    type: string
+    format: date-time
+    example: '2025-10-15T15:23:00.000Z'
+  updatedAt:
+    type: string
+    format: date-time
+    example: '2025-10-15T15:25:00.000Z'

@@ -2,20 +2,19 @@ openapi: 3.1.0
 info:
   version: 1.0.0
   title: Contacts app
+  description: This is a documentation of contacts app
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  description: This is a documentation of contacts app
 
 tags:
   - name: Contacts
-    description: Operations about users.
+    description: Operations about contacts
   - name: Auth
-    description: Auth operations.
+    description: Auth operations
 
 servers:
-  - url: http://localhost:3000
-  - url: https://example.com/api/v1
+  - url: https://nodejs-hw-mongodb-4-q2i2.onrender.com
 
 paths:
   /contacts:
@@ -27,9 +26,22 @@ paths:
   /contacts/{id}:
     get:
       $ref: '../swagger/paths/contacts/{id}/get.yaml'
+    patch:
+      $ref: '../swagger/paths/contacts/{id}/patch.yaml'
+    delete:
+      $ref: '../swagger/paths/contacts/{id}/delete.yaml'
 
 components:
+  schemas:
+    Contact:
+      $ref: ../swagger/components/schemas/contact.yaml
+  responses:
+    Unauthorized:
+      $ref: '../swagger/components/responses/401.yaml'
+    NotFound:
+      $ref: '../swagger/components/responses/404.yaml'
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
+      bearerFormat: JWT
