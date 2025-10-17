@@ -34,7 +34,7 @@ paths:
 components:
   schemas:
     Contact:
-      $ref: ../swagger/components/schemas/contact.yaml
+      $ref: ../swagger/components/schemas/Contact.yaml
   responses:
     Unauthorized:
       $ref: '../swagger/components/responses/401.yaml'
